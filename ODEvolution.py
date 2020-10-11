@@ -27,7 +27,7 @@ no_gluc.direction = -1
 # Include lag time
 ## Probably easiest with arrays of ts and ns for each round?
 # Possibility to have concentrations change over time
-## For antibiotic, but also for BAC through exhaustion model?
+## For antibiotic (dosing), but also for BAC through exhaustion model?
 # Make possible to let defined genotype emerge at certain timepoint. Then fit model to survival data. (Alternatively: wrapper with add_genotype after cycle)
 # Calculate total survivors from genotypes
 ## This should be done by returning a dataframe. Makes it easier for plotting and other operations
