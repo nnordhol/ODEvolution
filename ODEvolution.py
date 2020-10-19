@@ -18,10 +18,6 @@ from random import choice
 #Sfrom numba import jit
 
 
-def no_gluc(t,y, *args): return y[-1]
-no_gluc.terminal = True
-no_gluc.direction = -1
-
 ##### TODO #######
 
 # Define antimicrobial class. Antimicrobials can be added to experiments along with dosing schemes and (kill) kinetics.
