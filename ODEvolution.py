@@ -18,10 +18,6 @@ from random import choice
 #Sfrom numba import jit
 
 
-def no_gluc(t,y, *args): return y[-1]
-no_gluc.terminal = True
-no_gluc.direction = -1
-
 ##### TODO #######
 
 # Define antimicrobial class. Antimicrobials can be added to experiments along with dosing schemes and (kill) kinetics.
@@ -84,10 +80,8 @@ class Genotype:
         return [self.n, self.mumax, self.km, self.e]
         
     
-    def mutate(self, volume = 10, target_size = 9000, fitness_cutoff = 0):
+    def mutate(self, volume, target_size = 9000, fitness_cutoff = 0):
         
-        fitness_cutoff = 0
-        target_size = 9000
         dndt = (self.stepdy[-1])*volume
         expected = dndt*self.mr*target_size
         mutants = stats.poisson(expected).rvs()
