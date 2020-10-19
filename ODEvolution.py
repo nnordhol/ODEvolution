@@ -5,17 +5,17 @@ Created on Sun Jul 26 09:41:22 2020
 
 @author: nnordholt
 """
-from scipy.integrate import odeint, solve_ivp, ode
+from scipy.integrate import solve_ivp
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-from copy import deepcopy
+#import pandas as pd
+#from copy import deepcopy
 from random import random
 
 from random import choice
 
-from numba import jit
+#Sfrom numba import jit
 
 
 def no_gluc(t,y, *args): return y[-1]
@@ -24,8 +24,8 @@ no_gluc.direction = -1
 
 ##### TODO #######
 
-# Include lag time
-## Probably easiest with arrays of ts and ns for each round?
+# Return array of ts and ns for each cycle
+## This makes it easier to include lag, and calculate selection coefficients
 # Possibility to have concentrations change over time
 ## For antibiotic, but also for BAC through exhaustion model?
 # Make possible to let defined genotype emerge at certain timepoint. Then fit model to survival data. (Alternatively: wrapper with add_genotype after cycle)
