@@ -24,11 +24,13 @@ no_gluc.direction = -1
 
 ##### TODO #######
 
+# Define antimicrobial class. Antimicrobials can be added to experiments along with dosing schemes and (kill) kinetics.
+
 # Return array of ts and ns for each cycle
 ## This makes it easier to include lag, and calculate selection coefficients
 # Possibility to have concentrations change over time
 ## For antibiotic (dosing), but also for BAC through exhaustion model?
-# Make possible to let defined genotype emerge at certain timepoint. Then fit model to survival data. (Alternatively: wrapper with add_genotype after cycle)
+# Make possible to let defined genotype emerge at certain timepoint. Then fit model to survival data. (Alternatively: wrapper with add_genotype after cycle, then fit)
 # Calculate total survivors from genotypes
 ## This should be done by returning a dataframe. Makes it easier for plotting and other operations
 ### Problem : duplicate time entries, so time cant be used as index. Works for survivors, though
@@ -82,7 +84,7 @@ class Genotype:
         return [self.n, self.mumax, self.km, self.e]
         
     
-    def mutate(self, volume = 10):
+    def mutate(self, volume = 10, target_size = 9000, fitness_cutoff = 0):
         
         fitness_cutoff = 0
         target_size = 9000
@@ -275,8 +277,8 @@ class Experiment:
         #doubling.terminal = False
         #doubling.direction = -1
         
-        def no_gluc(t,y, *args): return y[-1]
-        no_gluc.terminal = True
+        #def no_gluc(t,y, *args): return y[-1]
+        #no_gluc.terminal = True
         #no_gluc.direction = -1
         
         #not_extinct = np.array([g.n[-1] for g in self.genotypes if not g.extinct])
@@ -375,6 +377,15 @@ class Experiment:
     
     def calc_t(self):
         taus = np.log(2)/self.from_genos('mumax')
+        
+    
+    def plot(self, not_extinct=True):
+        plt.figure()
+        if not_extinct:
+            [plt.plot(g.ts/24, g.n[1:]) for g in self.get_not_extinct()]
+        else: 
+            [plt.plot(g.ts/24, g.n[1:]) for g in self.genotypes]
+        plt.yscale('log')
 
 
 # Useful stuff:
