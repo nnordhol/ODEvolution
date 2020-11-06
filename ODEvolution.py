@@ -52,6 +52,23 @@ def growth(n, r, mumax, km, a = 0, ic50 = 1, kappa = 1):
 dfe_roberts = stats.beta(a = 0.0074, b = 2.4)
 
 
+def array_per_round(geno, t_span = 24):
+    where_arr = np.argwhere(geno.ts%t_span==0)[:,0]
+    print(where_arr)
+    #geno.na = np.split(geno.n[1:],where_arr)
+    geno.na = geno.n[1:][where_arr]
+    geno.ta = geno.ts[where_arr]
+    
+# This is crap!
+def get_logdiffs(geno):
+    t0s = geno.ta[0::3]
+    tes = geno.ta[1::3]
+    n0s = geno.na[0::3]
+    nes = geno.na[1::3]
+    tdiffs = tes - t0s
+    ndiffs = nes - n0s
+    return np.log(ndiffs)/tdiffs
+
 # Change Genotype.n to dict with cycle as key?
 class Genotype:
     """ Genotype class for competition and evolution experiments """
@@ -62,7 +79,7 @@ class Genotype:
         self.mumax = mumax
         self.e = e
         self.km = km
-        self.n = np.array([n0])
+        self.n = np.array([[n0]])
         self.mutations = np.zeros((0,1))
         self.survival = survival
         self.survivors = np.zeros((0,1))
@@ -110,6 +127,7 @@ class Genotype:
             mwes.append(mwe)
     
         return mwes
+    
     
         
         
