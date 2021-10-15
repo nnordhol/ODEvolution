@@ -40,6 +40,7 @@ from random import choice
 ## Alternatively, only append first and last value of each step?
 # Include target size, specific mutation in simulations
 # Use distribution of growth rates for each genotype to simulate phenotypes?
+# 
 
 
 # Define bacterial growth with Monod kinetics. n = number of bacteria, r = resource concentration:
@@ -70,6 +71,7 @@ def get_logdiffs(geno):
     return np.log(ndiffs)/tdiffs
 
 # Change Genotype.n to dict with cycle as key?
+# km should be 1.4 muM instead of 0.25 mug
 class Genotype:
     """ Genotype class for competition and evolution experiments """
     
@@ -109,7 +111,7 @@ class Genotype:
         mwes= []
         #survival_dist = stats.loguniform(10**-6, 2*10**-1).rvs(len(mu_effects))
         pos_neg=1 if random() < 0.5 else -1
-        trade_off = stats.norm(0.461, 0.04).rvs(len(mu_effects))## Observed trade-off in our experiments, plus some noise
+        trade_off = stats.norm(0.461, 0.14).rvs(len(mu_effects))## Observed trade-off in our experiments, plus some noise from std_err of linregress fit.
         for i,me in enumerate(mu_effects):
             #mu_dist = stats.uniform(0.1,1).rvs()
             #survival = survival_dist[i]
@@ -133,9 +135,6 @@ class Genotype:
         
         
         
-# Include volume and sample volume, and Poisson sampling!
-# Volume and Poisson sampling are important for emergence and propagation of mutants (absolute numbers are important here!)
-# [stats.poisson(g.n[-1]*(sample_vol/vol)).rvs() for g in self.genotypes]
 
 # Include calculation of selection coefficient matrix
         
