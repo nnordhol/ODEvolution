@@ -9,38 +9,10 @@ from scipy.integrate import solve_ivp
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 import numpy as np
-#import pandas as pd
-#from copy import deepcopy
 from random import random
 
 from random import choice
 
-#Sfrom numba import jit
-
-
-##### TODO #######
-
-# Define antimicrobial class. Antimicrobials can be added to experiments along with dosing schemes and (kill) kinetics.
-
-# Return array of ts and ns for each cycle
-## This makes it easier to include lag, and calculate selection coefficients
-# Possibility to have concentrations change over time
-## For antibiotic (dosing), but also for BAC through exhaustion model?
-# Make possible to let defined genotype emerge at certain timepoint. Then fit model to survival data. (Alternatively: wrapper with add_genotype after cycle, then fit)
-# Calculate total survivors from genotypes
-## This should be done by returning a dataframe. Makes it easier for plotting and other operations
-### Problem : duplicate time entries, so time cant be used as index. Works for survivors, though
-# Option to easily set fitness effects and target size (e.g. effects of the mutants we measure, plus target size from number of mutations)
-## Then we can use it in fitting
-# Make it possible to construct lineages (which genotype comes from which?)
-# Calculate selection coefficients (matrix?)
-# Incorporate trade-off between growth rate and survival: emergence of tolerant strain, which then loses survival to growth rate?
-## Trade off in both directions
-# Add ts and ns as array structures for each cycle to genotypes --> calculate number of mutants in each step
-## Alternatively, only append first and last value of each step?
-# Include target size, specific mutation in simulations
-# Use distribution of growth rates for each genotype to simulate phenotypes?
-# 
 
 
 # Define bacterial growth with Monod kinetics. n = number of bacteria, r = resource concentration:
@@ -53,25 +25,6 @@ def growth(n, r, mumax, km, a = 0, ic50 = 1, kappa = 1):
 dfe_roberts = stats.beta(a = 0.0074, b = 2.4)
 
 
-def array_per_round(geno, t_span = 24):
-    where_arr = np.argwhere(geno.ts%t_span==0)[:,0]
-    print(where_arr)
-    #geno.na = np.split(geno.n[1:],where_arr)
-    geno.na = geno.n[1:][where_arr]
-    geno.ta = geno.ts[where_arr]
-    
-# This is crap!
-def get_logdiffs(geno):
-    t0s = geno.ta[0::3]
-    tes = geno.ta[1::3]
-    n0s = geno.na[0::3]
-    nes = geno.na[1::3]
-    tdiffs = tes - t0s
-    ndiffs = nes - n0s
-    return np.log(ndiffs)/tdiffs
-
-# Change Genotype.n to dict with cycle as key?
-# km should be 1.4 muM instead of 0.25 mug
 class Genotype:
     """ Genotype class for competition and evolution experiments """
     
